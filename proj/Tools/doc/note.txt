@@ -1,0 +1,16 @@
+一、USB检测插拔 
+1，检测VBUS电压，正常连接的时候，一般为USB的5V电压，当然没连接的时候希望是0V，
+   我们可以通过电阻分压，然后将其接入到一个GPIO引脚，这样就可以通过该引脚的下降沿
+   来判断USB线的断开连接；
+2，检测Suspend中断，也就是说，在USB线和主机断开连接的时候会进入这个中断，
+   但是这样做有些问题，比如USB主机进入休眠模式的时候也会产生这个中断，在USB设备首次和主机连接的时候也会产生这个中断
+	1，在usb_conf.h文件中增加一个宏定义：#define SUSP_CALLBACK
+	2，在usb_endp.c文件中实现Suspend回调处理函数，如下所示：
+		void SUSP_Callback(void)
+		{
+			STM_EVAL_LEDOn(LED4);
+		}
+		
+当USB线断开连接之后,自动进入了深度随眠模式,要解决这个问题需要做两件事情：
+1，将usb_pwr.c文件中的fSuspendEnabled全局变量的默认值更改为FALSE;
+2，将usb_istr.c文件中，大概150行，Resume函数调用传入的参数修改为RESUME_ON
