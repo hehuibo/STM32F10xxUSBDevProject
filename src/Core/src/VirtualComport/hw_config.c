@@ -34,16 +34,12 @@
 #include "usb_pwr.h"
 
 /* Private typedef -----------------------------------------------------------*/
-
-
 /* Private define ------------------------------------------------------------*/
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
 ErrorStatus HSEStartUpStatus;
 
-
+uint8_t Receive_Buffer[64];
 /* Extern variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void IntToUnicode (uint32_t value , uint8_t *pbuf , uint8_t len);
@@ -51,9 +47,8 @@ static void IntToUnicode (uint32_t value , uint8_t *pbuf , uint8_t len);
 
 /*******************************************************************************
 * Function Name  : Set_USBClock
-* Description    : Configures USB Clock input (48MHz).
+* Description    : Configures USB Clock input (48MHz)
 * Input          : None.
-* Output         : None.
 * Return         : None.
 *******************************************************************************/
 void Set_USBClock(void)
@@ -66,10 +61,9 @@ void Set_USBClock(void)
 }
 
 /*******************************************************************************
-* Function Name  : Enter_LowPowerMode.
-* Description    : Power-off system clocks and power while entering suspend mode.
+* Function Name  : Enter_LowPowerMode
+* Description    : Power-off system clocks and power while entering suspend mode
 * Input          : None.
-* Output         : None.
 * Return         : None.
 *******************************************************************************/
 void Enter_LowPowerMode(void)
@@ -79,31 +73,30 @@ void Enter_LowPowerMode(void)
 }
 
 /*******************************************************************************
-* Function Name  : Leave_LowPowerMode.
-* Description    : Restores system clocks and power while exiting suspend mode.
+* Function Name  : Leave_LowPowerMode
+* Description    : Restores system clocks and power while exiting suspend mode
 * Input          : None.
-* Output         : None.
 * Return         : None.
 *******************************************************************************/
 void Leave_LowPowerMode(void)
 {
   DEVICE_INFO *pInfo = &Device_Info;
-  
+
   /* Set the device state to the correct state */
   if (pInfo->Current_Configuration != 0)
   {
     /* Device configured */
     bDeviceState = CONFIGURED;
   }
-  else 
+  else
   {
     bDeviceState = ATTACHED;
   }
 }
 
 /*******************************************************************************
-* Function Name  : USB_Interrupts_Config.
-* Description    : Configures the USB interrupts.
+* Function Name  : USB_Interrupts_Config
+* Description    : Configures the USB interrupts
 * Input          : None.
 * Output         : None.
 * Return         : None.
@@ -245,17 +238,17 @@ void USB_Configure(void)
 void Get_SerialNum(void)
 {
   uint32_t Device_Serial0, Device_Serial1, Device_Serial2;
-  
+
   Device_Serial0 = *(uint32_t*)ID1;
   Device_Serial1 = *(uint32_t*)ID2;
   Device_Serial2 = *(uint32_t*)ID3;
-  
+ 
   Device_Serial0 += Device_Serial2;
-  
+
   if (Device_Serial0 != 0)
   {
-    IntToUnicode (Device_Serial0, &Composite_StringSerial[2] , 8);
-    IntToUnicode (Device_Serial1, &Composite_StringSerial[18], 4);
+    IntToUnicode (Device_Serial0, &Virtual_Com_Port_StringSerial[2] , 8);
+    IntToUnicode (Device_Serial1, &Virtual_Com_Port_StringSerial[18], 4);
   }
 }
 

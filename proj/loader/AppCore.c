@@ -71,10 +71,9 @@ void vDelay1STask(void)
 }
 
 /***************MainTask*************************/
-
 void vMainTask(void)
 {
-
+ 
 }
 
 /**хннЯ**/

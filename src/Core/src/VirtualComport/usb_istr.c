@@ -70,18 +70,30 @@ void (*pEpInt_OUT[7])(void) =
 /*******************************************************************************
 * Function Name  : USB_Istr
 * Description    : ISTR events interrupt service routine
-* Input          : None.
-* Output         : None.
-* Return         : None.
+* Input          :
+* Output         :
+* Return         :
 *******************************************************************************/
 void USB_Istr(void)
 {
     uint32_t i=0;
  __IO uint32_t EP[8];
-
-
+  
   wIstr = _GetISTR();
 
+#if (IMR_MSK & ISTR_SOF)
+  if (wIstr & ISTR_SOF & wInterrupt_Mask)
+  {
+    _SetISTR((uint16_t)CLR_SOF);
+    bIntPackSOF++;
+
+#ifdef SOF_CALLBACK
+    SOF_Callback();
+#endif
+  }
+#endif
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/  
+  
 #if (IMR_MSK & ISTR_CTR)
   if (wIstr & ISTR_CTR & wInterrupt_Mask)
   {
@@ -148,8 +160,8 @@ void USB_Istr(void)
     else
     {
       /* if not possible then resume after xx ms */
+      //Resume(RESUME_LATER);
       Resume(RESUME_ON);
-      //Resume(RESUME_LATER); 
     }
     /* clear of the ISTR bit must be done after setting of CNTR_FSUSP */
     _SetISTR((uint16_t)CLR_SUSP);
@@ -159,24 +171,13 @@ void USB_Istr(void)
   }
 #endif
   /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-#if (IMR_MSK & ISTR_SOF)
-  if (wIstr & ISTR_SOF & wInterrupt_Mask)
-  {
-    _SetISTR((uint16_t)CLR_SOF);
-    bIntPackSOF++;
 
-#ifdef SOF_CALLBACK
-    SOF_Callback();
-#endif
-  }
-#endif
-  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 #if (IMR_MSK & ISTR_ESOF)
   if (wIstr & ISTR_ESOF & wInterrupt_Mask)
   {
     /* clear ESOF flag in ISTR */
     _SetISTR((uint16_t)CLR_ESOF);
-
+    
     if ((_GetFNR()&FNR_RXDP)!=0)
     {
       /* increment ESOF counter */
@@ -200,9 +201,9 @@ void USB_Istr(void)
         /*clear FRES*/
         wCNTR&=~CNTR_FRES;
         _SetCNTR(wCNTR);
+      
         /*poll for RESET flag in ISTR*/
         while((_GetISTR()&ISTR_RESET) == 0);
-  
         /* clear RESET flag in ISTR */
         _SetISTR((uint16_t)CLR_RESET);
    
@@ -230,3 +231,4 @@ void USB_Istr(void)
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

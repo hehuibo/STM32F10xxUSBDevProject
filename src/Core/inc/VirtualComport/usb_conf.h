@@ -4,7 +4,7 @@
   * @author  MCD Application Team
   * @version V4.0.0
   * @date    21-January-2013
-  * @brief   Custom HID demo configuration file
+  * @brief   Virtual COM Port Demo configuration  header
   ******************************************************************************
   * @attention
   *
@@ -36,26 +36,13 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 /* External variables --------------------------------------------------------*/
+
 /*-------------------------------------------------------------*/
-
-#if 1
-#include "platform_config.h"
-#else
-
-#define  USB_TX_MAX_LEN        32 /*发送数据长度*/
-#define  USB_RX_MAX_LEN        32 /*接收数据长度*/
-#endif
-
-/*
-  desc.c 数据操作发送
-  endp.c 端点回调函数，数据收发
-  prop.c hid复位配置长度
-*/
-
 /* EP_NUM */
 /* defines how many endpoints are used by the device */
 /*-------------------------------------------------------------*/
-#define EP_NUM     (4)
+
+#define EP_NUM                          (4)
 
 /*-------------------------------------------------------------*/
 /* --------------   Buffer Description Table  -----------------*/
@@ -66,22 +53,14 @@
 
 /* EP0  */
 /* rx/tx buffer base address */
-#define ENDP0_RXADDR        (0x18)
-#define ENDP0_TXADDR        (0x58)
-
+#define ENDP0_RXADDR        (0x40)
+#define ENDP0_TXADDR        (0x80)
 
 /* EP1  */
-#define ENDP1_RXADDR        (0x98)
-#define ENDP1_TXADDR        (0xD8)
-
-/* EP2  */
-#define ENDP2_TXADDR        (0x118)
-#define ENDP2_RXADDR        (0x198)
-/* EP4  */
-#define ENDP4_RXADDR        (0x158)
-
-/* EP5  */
-#define ENDP5_TXADDR        (0x198)
+/* tx buffer base address */
+#define ENDP1_TXADDR        (0xC0)
+#define ENDP2_TXADDR        (0x100)
+#define ENDP3_RXADDR        (0x110)
 
 
 /*-------------------------------------------------------------*/
@@ -93,24 +72,32 @@
 #define IMR_MSK (CNTR_CTRM  | CNTR_WKUPM | CNTR_SUSPM | CNTR_ERRM  | CNTR_SOFM \
                  | CNTR_ESOFM | CNTR_RESETM )
 
+/*#define CTR_CALLBACK*/
+/*#define DOVR_CALLBACK*/
+/*#define ERR_CALLBACK*/
+/*#define WKUP_CALLBACK*/
+/*#define SUSP_CALLBACK*/
+/*#define RESET_CALLBACK*/
+/*#define SOF_CALLBACK*/
+/*#define ESOF_CALLBACK*/
 /* CTR service routines */
 /* associated to defined endpoints */
-//#define  EP1_IN_Callback   NOP_Process
-//#define  EP2_IN_Callback   NOP_Process
+/*#define  EP1_IN_Callback   NOP_Process*/
+#define  EP2_IN_Callback   NOP_Process
 #define  EP3_IN_Callback   NOP_Process
 #define  EP4_IN_Callback   NOP_Process
 #define  EP5_IN_Callback   NOP_Process
 #define  EP6_IN_Callback   NOP_Process
 #define  EP7_IN_Callback   NOP_Process
 
-//#define  EP1_OUT_Callback   NOP_Process
-//#define  EP2_OUT_Callback   NOP_Process
-#define  EP3_OUT_Callback   NOP_Process
+#define  EP1_OUT_Callback   NOP_Process
+#define  EP2_OUT_Callback   NOP_Process
+/*#define  EP3_OUT_Callback   NOP_Process*/
 #define  EP4_OUT_Callback   NOP_Process
 #define  EP5_OUT_Callback   NOP_Process
 #define  EP6_OUT_Callback   NOP_Process
 #define  EP7_OUT_Callback   NOP_Process
 
-#endif /*__USB_CONF_H*/
+#endif /* __USB_CONF_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

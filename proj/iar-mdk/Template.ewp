@@ -350,7 +350,7 @@
                     <state>$PROJ_DIR$\..\..\src\Comm\utlis\inc\trace</state>
                     <state>$PROJ_DIR$\..\..\src\Comm\utlis\inc\trace\RTT</state>
                     <state>$PROJ_DIR$\..\..\src\Comm\Param\inc</state>
-                    <state>$PROJ_DIR$\..\..\src\Core\inc\CompositeDev</state>
+                    <state>$PROJ_DIR$\..\..\src\Core\inc\VirtualComport</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2174,27 +2174,27 @@
     <group>
         <name>core</name>
         <group>
-            <name>CompositeDev</name>
+            <name>VirtualComport</name>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\hw_config.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\hw_config.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_desc.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_desc.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_endp.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_endp.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_io.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_io.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_istr.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_istr.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_prop.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_prop.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\src\Core\src\CompositeDev\usb_pwr.c</name>
+                <name>$PROJ_DIR$\..\..\src\Core\src\VirtualComport\usb_pwr.c</name>
             </file>
         </group>
     </group>

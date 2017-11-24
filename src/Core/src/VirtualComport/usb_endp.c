@@ -27,79 +27,51 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include "hw_config.h"
 #include "usb_lib.h"
+#include "usb_desc.h"
+#include "usb_mem.h"
+#include "hw_config.h"
 #include "usb_istr.h"
+#include "usb_pwr.h"
+#include "FSM.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+/* Interval between sending IN packets in frame number (1 frame = 1ms) */
+#define VCOMPORT_IN_FRAME_INTERVAL             5
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
-#if defined (_LOADER) || defined (_NoRTOSKernel) 
-#include "FSM.h"
-#endif
-
-uint8_t CustomHIDRecvBuffer[CustomHID_RXMAXLEN];
-uint8_t CustomHIDSendBuffer[CustomHID_TXMAXLEN];
-
+uint32_t VCPRecvLength;
+uint8_t VCPRecvBuffer[VIRTUAL_COM_PORT_DATA_SIZE];
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+
 /*******************************************************************************
-* Function Name  : EP1_IN_Callback.
-* Description    : EP1 IN Callback Routine.
+* Function Name  : EP1_IN_Callback
+* Description    :
 * Input          : None.
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void EP1_IN_Callback(void)
-{
-  #if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
-  dbgTRACE_FUNCTION();
-  #endif
-}
 
-void EP2_OUT_Callback(void)
+void EP1_IN_Callback (void)
 {
-  #if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
-  dbgTRACE_FUNCTION();
-  #endif
-}
-
-void EP2_IN_Callback(void)
-{
-  #if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
-  dbgTRACE_FUNCTION();
-  #endif
+  FSM_SetOn(g_FSM.FLAG_USB_VCPTxed);
 }
 
 /*******************************************************************************
-* Function Name  : EP1_OUT_Callback.
-* Description    : EP1 OUT Callback Routine.
+* Function Name  : EP3_OUT_Callback
+* Description    :
 * Input          : None.
 * Output         : None.
 * Return         : None.
 *******************************************************************************/
-void EP1_OUT_Callback(void)
+void EP3_OUT_Callback(void)
 {
-  /* Read received data */  
-  #if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
-  dbgTRACE("EPRxCount:%d\r\n", GetEPRxCount(ENDP1));
-  #endif
-#if 1
-  USB_SIL_Read(EP1_OUT, CustomHIDRecvBuffer);
-#else
-  PMAToUserBufferCopy(CustomHIDRecvBuffer, ENDP1_RXADDR, CustomHID_RXMAXLEN);
-#endif
-  SetEPRxStatus(ENDP1, EP_RX_VALID);
-#if defined (_LOADER) || defined (_NoRTOSKernel) 
-  FSM_SetOn(g_FSM.FLAG_USB_CustomHIDRXED);
-#endif
- 
+  FSM_SetOn(g_FSM.FLAG_USB_VCPRecved);
+  VCPRecvLength = GetEPRxCount(ENDP3);
+  PMAToUserBufferCopy((unsigned char*)VCPRecvBuffer, ENDP3_RXADDR, VCPRecvLength);
 }
-
-
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

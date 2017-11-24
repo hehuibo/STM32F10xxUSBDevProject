@@ -14,6 +14,8 @@ typedef struct _tag_GlobalFsmTYPE
   unsigned int FSM_TASK_DELAY1S             : 1;
   unsigned int FLAG_USART1RXED              : 1;
   unsigned int FLAG_USB_CustomHIDRXED       : 1;
+  unsigned int FLAG_USB_VCPRecved           : 1;
+  unsigned int FLAG_USB_VCPTxed             : 1;
   
 }xTGlobalFsm_t;
 

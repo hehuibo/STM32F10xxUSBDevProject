@@ -60,6 +60,7 @@
 
 #endif
 
+
 /* Define the STM32F10x hardware depending on the used evaluation board */
 #define USB_SOFT_CTL_KEY 0 //软件方式控制
 
@@ -80,4 +81,3 @@
 #endif /* __PLATFORM_CONFIG_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

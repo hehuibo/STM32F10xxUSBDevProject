@@ -83,21 +83,17 @@ void vDelay1STask(void)
 }
 
 /***************MainTask*************************/
-
+void CDC_TestDemo(void);
 void vMainTask(void)
 {
-  uint8_t USBRcvBfr[CustomHID_RXMAXLEN];
   if(FSM_IsOn(g_FSM.FLAG_USART1RXED)){
     FSM_SetOff(g_FSM.FLAG_USART1RXED);	
     #if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
     dbgTRACE("RxBuffer[0]:%c\n", g_AppCommBfrMnt.pRxBfr[0]);
     #endif 
   }
-  if(FSM_IsOn(g_FSM.FLAG_USB_CustomHIDRXED)){	
-    FSM_SetOff(g_FSM.FLAG_USB_CustomHIDRXED);
-    USBCustomHID_GetRecvBufferData(USBRcvBfr, sizeof(USBRcvBfr));
-    USBCustomHID_SendBufferData(USBRcvBfr, CustomHID_RXMAXLEN);
-  }
+   CDC_TestDemo();
+
 }
 
 /**ÈÎÎñ**/

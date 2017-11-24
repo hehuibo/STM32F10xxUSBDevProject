@@ -178,7 +178,6 @@ void Suspend(void)
 #else
         SCB->SCR |= SCB_SCR_SLEEPDEEP;       
 #endif
-	
 	/* enter system in STOP mode, only when wakeup flag in not set */
 	if((_GetISTR()&ISTR_WKUP)==0)
 	{

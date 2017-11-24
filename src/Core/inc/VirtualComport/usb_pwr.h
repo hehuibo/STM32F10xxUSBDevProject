@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    hw_config.h
+  * @file    usb_pwr.h
   * @author  MCD Application Team
   * @version V4.0.0
   * @date    21-January-2013
-  * @brief   Hardware Configuration & Setup
+  * @brief   Connection/disconnection & power management header
   ******************************************************************************
   * @attention
   *
@@ -27,35 +27,46 @@
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __HW_CONFIG_H
-#define __HW_CONFIG_H
+#ifndef __USB_PWR_H
+#define __USB_PWR_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "platform_config.h"
-
-#if defined (UART_TRACE) || defined (JLINK_RTT_TRACE)
-#include "trace.h"
-#endif
-
 /* Exported types ------------------------------------------------------------*/
+typedef enum _RESUME_STATE
+{
+  RESUME_EXTERNAL,
+  RESUME_INTERNAL,
+  RESUME_LATER,
+  RESUME_WAIT,
+  RESUME_START,
+  RESUME_ON,
+  RESUME_OFF,
+  RESUME_ESOF
+} RESUME_STATE;
+
+typedef enum _DEVICE_STATE
+{
+  UNCONNECTED,
+  ATTACHED,
+  POWERED,
+  SUSPENDED,
+  ADDRESSED,
+  CONFIGURED
+} DEVICE_STATE;
+
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-/* Exported define -----------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void USB_Configure(void);
+void Suspend(void);
+void Resume_Init(void);
+void Resume(RESUME_STATE eResumeSetVal);
+RESULT PowerOn(void);
+RESULT PowerOff(void);
 
-void Set_USBClock(void);
-void Enter_LowPowerMode(void);
-void Leave_LowPowerMode(void);
-void USB_Interrupts_Config(void);
-void USB_Cable_Config (FunctionalState NewState);
-void Get_SerialNum(void);
+/* External variables --------------------------------------------------------*/
+extern  __IO uint32_t bDeviceState; /* USB device status */
+extern __IO bool fSuspendEnabled;  /* true when suspend is possible */
 
-void USBKeyBoard_SendCardSnr(uint32_t mCardNoSnr);
-void USBKeyBoard_SendData(uint8_t data);
-uint32_t USBCustomHID_SendBufferData(uint8_t *pData, uint32_t TxLen);
-uint32_t USBCustomHID_GetRecvBufferData(uint8_t *pData, uint32_t count);
-
-#endif  /*__HW_CONFIG_H*/
+#endif  /*__USB_PWR_H*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
